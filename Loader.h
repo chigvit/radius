@@ -21,12 +21,11 @@ public:
 };
 
 // class CoordinateData for inheritance by other classes where is coordinates
-class CoordinateData  {
-public:
+struct CoordinateData  {
+
     double latitude;
     double longitude;
 
-public:
     CoordinateData(double lat, double lon) : latitude(lat), longitude(lon) {}
 
     [[nodiscard]] std::pair<double, double> getCoordinates() const   {
@@ -36,10 +35,10 @@ public:
 
 // Data class for Cities
 class City : public Data {
-public:
+protected:
     std::string name;
     std::pair<double, double> coordinate;
-
+public:
     City(std::string cityName, double lat, double lon)
             : coordinate(lat, lon), name(std::move(cityName)) {}
 
@@ -53,7 +52,7 @@ public:
 
 // Data class for Hotels
 class  Hotels : public CoordinateData {
-public:
+protected:
     uint8_t county_id;
     uint8_t city_id;
     std::string name;

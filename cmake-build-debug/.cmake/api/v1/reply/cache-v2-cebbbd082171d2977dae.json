@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "d:/workspace/radius_test/cmake-build-debug"
+			"value" : "d:/workspace/radius/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -575,7 +575,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "D:/workspace/radius_test/cmake-build-debug/CMakeFiles/pkgRedirects"
+			"value" : "D:/workspace/radius/cmake-build-debug/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -647,7 +647,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "D:/workspace/radius_test"
+			"value" : "D:/workspace/radius"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -1291,7 +1291,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "D:/workspace/radius_test/cmake-build-debug"
+			"value" : "D:/workspace/radius/cmake-build-debug"
 		},
 		{
 			"name" : "radius_IS_TOP_LEVEL",
@@ -1315,7 +1315,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "D:/workspace/radius_test"
+			"value" : "D:/workspace/radius"
 		}
 	],
 	"kind" : "cache",

@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "D:/workspace/radius_test/cmake-build-debug",
-		"source" : "D:/workspace/radius_test"
+		"build" : "D:/workspace/radius/cmake-build-debug",
+		"source" : "D:/workspace/radius"
 	},
 	"version" : 
 	{
