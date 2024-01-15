@@ -1,6 +1,6 @@
 
-#ifndef RADIUS_LOADER_H
-#define RADIUS_LOADER_H
+#ifndef RADIUS_LOADER_HPP
+#define RADIUS_LOADER_HPP
 
 #include <utility>
 #include <vector>
@@ -11,15 +11,6 @@
 #include <map>
 #include <memory>
 
-
-class Data {
-public:
-    virtual ~Data() = default;
-
-    virtual std::string getName() const = 0;
-    virtual std::pair<double, double> getCoordinates() const = 0;
-};
-
 // class CoordinateData for inheritance by other classes where is coordinates
 struct CoordinateData  {
 
@@ -27,31 +18,40 @@ struct CoordinateData  {
     double longitude;
 
     CoordinateData(double lat, double lon) : latitude(lat), longitude(lon) {}
-
-    [[nodiscard]] std::pair<double, double> getCoordinates() const   {
-        return std::make_pair(latitude, longitude);
-    }
 };
+
+
+class Data {
+public:
+    virtual ~Data() = default;
+
+    virtual std::string getName() const = 0;
+    //virtual std::pair<double, double> getCoordinates() const = 0;
+    virtual CoordinateData getCoordinateData() const = 0;
+};
+
 
 // Data class for Cities
 class City : public Data {
 protected:
     std::string name;
-    std::pair<double, double> coordinate;
+    //std::pair<double, double> coordinate;
+    CoordinateData coordinateData{0,0};
 public:
-    City(std::string cityName, double lat, double lon)
-            : coordinate(lat, lon), name(std::move(cityName)) {}
 
-    std::pair<double, double> getCoordinates() const override {
-        return coordinate;
+    City(std::string cityName, CoordinateData coord)
+            : coordinateData(coord.latitude, coord.longitude), name(std::move(cityName)) {}
+
+    CoordinateData getCoordinateData() const override {
+        return coordinateData;
     }
-    std::string getName() const override{
+    [[nodiscard]] std::string getName() const override{
         return name;
     }
 };
 
 // Data class for Hotels
-class  Hotels : public CoordinateData {
+class  Hotels : public Data {
 protected:
     uint8_t county_id;
     uint8_t city_id;
@@ -77,7 +77,7 @@ public:
     }
 
     /*
-     * Load data from file
+     * Load data from CSV file
      */
     std::map<std::string, std::shared_ptr<Data>>  loadData() override{
 
@@ -99,9 +99,11 @@ public:
             // split line into 4 substrings : number id, city, latitude, longitude
             std::vector<std::string> records;
             while (std::getline(ss, substr, ',')) {
+//                std::cout<<"kkk";
                 records.push_back(substr);
             }
             // check valid params
+
             if (records.size() >= 4 && !records[2].empty() && !records[3].empty()) {
 
                 std::string cityId = records[0];
@@ -111,11 +113,13 @@ public:
                     double latitude = std::stod(records[2]);
                     double longitude = std::stod(records[3]);
 
-                    // create cities cache
-                    citiesCache[cityId] = std::make_shared<City>(City{records[1], latitude, longitude});
+                    CoordinateData coord{latitude, longitude};
+
+                    citiesCache[cityId] = std::make_shared<City>( City (records[1], coord) );
                 }
             }
         }
+
         std::cout << "Loaded cities : " << citiesCache.size() << std::endl;
 
         return citiesCache;
@@ -170,4 +174,4 @@ public:
 };
 
 
-#endif //RADIUS_LOADER_H
+#endif //RADIUS_LOADER_HPP

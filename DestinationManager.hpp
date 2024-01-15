@@ -1,7 +1,7 @@
 
-#ifndef RADIUS_DESTINATION_MANAGER_H
-#define RADIUS_DESTINATION_MANAGER_H
-#include "Loader.h"
+#ifndef RADIUS_DESTINATIONMANAGER_HPP
+#define RADIUS_DESTINATIONMANAGER_HPP
+#include "Loader.hpp"
 #include <iostream>
 #include <vector>
 #include <cmath>
@@ -21,25 +21,45 @@ public:
         dataCache = _dataCache;
     }
 
-    std::map<double, std::shared_ptr<Data>> findDestinationsInRadius( CoordinateData center, double radius)  {
+    std::map<double, std::shared_ptr<Data>> getDestinationsInRadius( CoordinateData center, double radius)  {
 
         std::map<double, std::shared_ptr<Data>> vCities;
 
+        std::cout<<"size="<<dataCache.size()<<"\n";
         for (const auto & city : dataCache)
         {
-            auto citCoord = city.second->getCoordinates();
-            double distance =  getDistance(center, CoordinateData(citCoord.first,citCoord.second));
+            auto citCoord = city.second->getCoordinateData();
+            double distance =  getDistance(center, citCoord);
 
             if(distance <= radius && distance != 0 )
             {
-                vCities[distance] =   std::make_shared<City>(City{city.second->getName(), citCoord.first, citCoord.second});
+                vCities[distance] =   std::make_shared<City>( City{city.second->getName(), city.second->getCoordinateData()});
             }
         }
 
         return std::move(vCities);
     }
 
-private:
+    //select cities by name
+    std::map<double, std::shared_ptr<Data>> getDestinationsInRadius( const std::string& city_name, double radius) {
+        std::map<double, std::shared_ptr<Data>> vCities;
+
+        for(auto &a: dataCache) {
+
+            if(city_name == a.second->getName()) {
+                CoordinateData center = a.second->getCoordinateData();
+                std::cout<<center.latitude<<" "<<center.longitude<<std::endl;
+
+                 vCities = getDestinationsInRadius( center,  radius);
+                 break;
+            }
+        }
+
+        return std::move(vCities);
+    }
+
+        private:
+
     // calc distance betaine two points
     static double getDistance(const CoordinateData& a, const CoordinateData& b) {
         constexpr double EarthRadius = 6371.0; // radius of the earth
@@ -69,4 +89,4 @@ private:
 };
 
 
-#endif //RADIUS_DESTINATION_MANAGER_H
+#endif //RADIUS_DESTINATIONMANAGER_HPP

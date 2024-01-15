@@ -11,16 +11,14 @@ public:
     static std::map<double, std::shared_ptr< Data>>  getSitiesByCoordinate(CoordinateData coordinateData, uint8_t distance,
                                                                     const std::shared_ptr<DestinationManager> &destinationManager )
     {
-        return  destinationManager->findDestinationsInRadius(coordinateData, distance);
+        return  destinationManager->getDestinationsInRadius(coordinateData, distance);
     }
 
     // select cities by city name
-    static std::map<double, std::shared_ptr< Data>>  getSitiesByName(std::string && name, uint8_t distance,
-                                              const std::shared_ptr<DestinationManager> &destinationManager )
+    static std::map<double, std::shared_ptr< Data>>  getSitiesByName(const std::string& name, uint8_t distance,
+                                                              const std::shared_ptr<DestinationManager> &destinationManager )
     {
-        std::map<double, std::shared_ptr< Data>> vCity;
-        // TODO
-        return vCity;
+        return destinationManager->getDestinationsInRadius(name, distance);
     }
 
     void getAllDataFromManager(DestinationManager& manager) {

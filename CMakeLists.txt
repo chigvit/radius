@@ -4,5 +4,5 @@ project(radius)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(radius main.cpp
-        Loader.h
+        Loader.hpp
         API.h)
